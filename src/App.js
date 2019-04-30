@@ -1,12 +1,22 @@
 import React from 'react';
-import './App.css';
+import ProductCard from './ProductCard';
+import { withStyles } from '@material-ui/core';
+
+const styles = {
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'center'
+  }
+}
 
 class App extends React.Component {
   state = {
     products: []
   }
 
-  componentDidMount() {
+  componentDidMount(npm) {
     this.mounted = true;
 
     fetch("/products.json").then(result => result.json()).then(res_json => {
@@ -27,15 +37,16 @@ class App extends React.Component {
 
   render() {
     const { products } = this.state;
+    const { classes } = this.props;
 
     return (
-      <div className="App">
+      <div className={classes.container}>
         {products.map(product => (
-          <div key={product.sku}>{product.title}</div>
+          <ProductCard key={product.sku} title={product.title} subtitle={product.description} sku={product.sku} />
         ))}
       </div>
     );
   }
 }
 
-export default App;
+export default withStyles(styles)(App);
