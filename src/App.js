@@ -1,26 +1,41 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    products: []
+  }
+
+  componentDidMount() {
+    this.mounted = true;
+
+    fetch("/products.json").then(result => result.json()).then(res_json => {
+      if (!this.mounted) return;
+
+      const { products: products_obj } = res_json;
+      const products = Object.values(products_obj);
+
+      this.setState({
+        products: products
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
+  render() {
+    const { products } = this.state;
+
+    return (
+      <div className="App">
+        {products.map(product => (
+          <div key={product.sku}>{product.title}</div>
+        ))}
+      </div>
+    );
+  }
 }
 
 export default App;
