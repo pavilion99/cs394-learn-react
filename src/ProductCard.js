@@ -36,7 +36,7 @@ const styles = {
 
 const format = price => ("$" + price.toFixed(2));
 
-const ProductCard = ({ sku, title, subtitle, classes, price }) => {
+const ProductCard = ({ sku, title, subtitle, classes, price, add: addToCart }) => {
     let [size, setSize] = useState("small");
 
     return (
