@@ -16,7 +16,8 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'left'
+        flexGrow: 1,
+        paddingLeft: 8
     },
     size: {
         textTransform: 'capitalize'

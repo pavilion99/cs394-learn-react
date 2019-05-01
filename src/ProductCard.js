@@ -62,7 +62,7 @@ const ProductCard = ({ sku, title, subtitle, classes, price, add: addToCart }) =
                 <Typography className={classes.price} variant="subtitle1">
                     {format(price)}
                 </Typography>
-                <Button size="small" color="primary">Add to cart</Button>
+                <Button size="small" color="primary" onClick={addToCart.bind(null, sku, size)}>Add to cart</Button>
             </CardActions>
         </Card>
     );
