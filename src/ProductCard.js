@@ -27,12 +27,17 @@ const styles = {
         paddingBottom: 0
     },
     actions: {
-        justifyContent: 'flex-end'
+        justifyContent: 'space-between'
+    },
+    price: {
+        paddingLeft: 12
     }
 };
 
-const ProductCard = ({ sku, title, subtitle, classes }) => {
-    let [size, setSize] = useState("S");
+const format = price => ("$" + price.toFixed(2));
+
+const ProductCard = ({ sku, title, subtitle, classes, price }) => {
+    let [size, setSize] = useState("small");
 
     return (
         <Card className={classes.card}>
@@ -54,6 +59,9 @@ const ProductCard = ({ sku, title, subtitle, classes }) => {
                 </div>
             </CardContent>
             <CardActions className={classes.actions}>
+                <Typography className={classes.price} variant="subtitle1">
+                    {format(price)}
+                </Typography>
                 <Button size="small" color="primary">Add to cart</Button>
             </CardActions>
         </Card>

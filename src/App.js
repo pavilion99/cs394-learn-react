@@ -42,7 +42,7 @@ class App extends React.Component {
     return (
       <div className={classes.container}>
         {products.map(product => (
-          <ProductCard key={product.sku} title={product.title} subtitle={product.description} sku={product.sku} />
+          <ProductCard key={product.sku} title={product.title} subtitle={product.description} sku={product.sku} price={product.price} />
         ))}
       </div>
     );
