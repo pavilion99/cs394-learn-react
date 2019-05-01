@@ -3,6 +3,7 @@ import ProductCard, { priceFormat } from './ProductCard';
 import { withStyles, Drawer, Fab, Typography } from '@material-ui/core';
 import { ShoppingCart as ShoppingCartIcon } from '@material-ui/icons';
 import ProductListing from './ProductListing';
+import firebase from 'firebase';
 
 const styles = {
   container: {
@@ -27,10 +28,22 @@ const styles = {
   }
 }
 
+firebase.initializeApp({
+  apiKey: "AIzaSyBQfTv3Ky3_6yYPJjMDmpvZ80hjX0JqH78",
+  authDomain: "cs394-learn-react.firebaseapp.com",
+  databaseURL: "https://cs394-learn-react.firebaseio.com",
+  projectId: "cs394-learn-react",
+  storageBucket: "cs394-learn-react.appspot.com",
+  messagingSenderId: "220327685707"
+});
+
+const db = firebase.database();
+
 const App = ({ classes }) => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [inventory, setInventory] = useState({inventory: {}});
 
   useEffect(() => {
     fetch("/products.json").then(result => result.json()).then(res_json => {
@@ -38,6 +51,18 @@ const App = ({ classes }) => {
       const products_vals = Object.values(products_obj);
   
       setProducts(products_vals);
+    });
+  }, []);
+
+  // useEffect(() => {
+  //   fetch("/inventory.json").then(result => result.json()).then(res_json => {
+  //     setInventory(res_json);
+  //   });
+  // }, []);
+
+  useEffect(() => {
+    db.ref('inventory/').on('value', res => {
+      setInventory({inventory: res.val()});
     });
   }, []);
 
@@ -70,7 +95,7 @@ const App = ({ classes }) => {
         </div>
       </Drawer>
       {products.map(product => (
-        <ProductCard key={product.sku} title={product.title} subtitle={product.description} sku={product.sku} price={product.price} add={addToCart} />
+        <ProductCard inCart={cart.filter(item => item[0] === product.sku)} key={product.sku} title={product.title} subtitle={product.description} sku={product.sku} price={product.price} add={addToCart} inventory={inventory.inventory[product.sku + ""]} />
       ))}
       <Fab className={classes.carticon} color="primary" onClick={toggleCart}>
         <ShoppingCartIcon />

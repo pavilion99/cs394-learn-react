@@ -36,12 +36,23 @@ const styles = {
 
 const format = price => ("$" + price.toFixed(2));
 
-const ProductCard = ({ sku, title, subtitle, classes, price, add: addToCart }) => {
-    let [size, setSize] = useState("small");
+const hasInventory = (inventory, cart, size) => {
+    if (typeof(inventory) === "undefined")
+        return false;
+    const rCart = cart.filter(item => item[1] === size).length;
+    console.log(inventory, cart);
+    return inventory[size] - rCart > 0;
+}
+
+const ProductCard = ({ sku, title, subtitle, classes, price, add: addToCart, inventory, inCart }) => {
+    let [size, setSize] = useState("");
 
     const addToCartTS = (sku, size) => {
         addToCart(sku, size, new Date().getTime());
     }
+
+    if (size !== "" && !hasInventory(inventory, inCart, size))
+        setSize("");
 
     return (
         <Card className={classes.card}>
@@ -59,18 +70,18 @@ const ProductCard = ({ sku, title, subtitle, classes, price, add: addToCart }) =
                     </Typography>
                 </div>
                 <div>
-                    <Size size={size} changeSize={setSize} />
+                    <Size size={size} changeSize={setSize} inventory={inventory} inCart={inCart} />
                 </div>
             </CardContent>
             <CardActions className={classes.actions}>
                 <Typography className={classes.price} variant="subtitle1">
                     {format(price)}
                 </Typography>
-                <Button size="small" color="primary" onClick={addToCartTS.bind(null, sku, size)}>Add to cart</Button>
+                <Button size="small" color="primary" disabled={size === ""} onClick={addToCartTS.bind(null, sku, size)}>Add to cart</Button>
             </CardActions>
         </Card>
     );
 };
 
-export { format as priceFormat };
+export { format as priceFormat, hasInventory };
 export default withStyles(styles)(ProductCard);
