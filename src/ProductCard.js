@@ -40,7 +40,6 @@ const hasInventory = (inventory, cart, size) => {
     if (typeof(inventory) === "undefined")
         return false;
     const rCart = cart.filter(item => item[1] === size).length;
-    console.log(inventory, cart);
     return inventory[size] - rCart > 0;
 }
 
