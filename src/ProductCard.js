@@ -68,4 +68,5 @@ const ProductCard = ({ sku, title, subtitle, classes, price, add: addToCart }) =
     );
 };
 
+export { format as priceFormat };
 export default withStyles(styles)(ProductCard);
