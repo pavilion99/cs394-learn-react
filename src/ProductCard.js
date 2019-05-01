@@ -39,6 +39,10 @@ const format = price => ("$" + price.toFixed(2));
 const ProductCard = ({ sku, title, subtitle, classes, price, add: addToCart }) => {
     let [size, setSize] = useState("small");
 
+    const addToCartTS = (sku, size) => {
+        addToCart(sku, size, new Date().getTime());
+    }
+
     return (
         <Card className={classes.card}>
             <CardMedia className={classes.media}
@@ -62,7 +66,7 @@ const ProductCard = ({ sku, title, subtitle, classes, price, add: addToCart }) =
                 <Typography className={classes.price} variant="subtitle1">
                     {format(price)}
                 </Typography>
-                <Button size="small" color="primary" onClick={addToCart.bind(null, sku, size)}>Add to cart</Button>
+                <Button size="small" color="primary" onClick={addToCartTS.bind(null, sku, size)}>Add to cart</Button>
             </CardActions>
         </Card>
     );

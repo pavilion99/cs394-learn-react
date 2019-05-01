@@ -41,13 +41,17 @@ const App = ({ classes }) => {
     });
   }, []);
 
-  const addToCart = (sku, size) => {
-    setCart([...cart, [sku, size]]);
+  const addToCart = (sku, size, ts) => {
+    setCart([...cart, [sku, size, ts]]);
     toggleCart();
   };
 
   const toggleCart = () => {
     setCartOpen(!cartOpen);
+  }
+
+  const removeFromCart = ts => {
+    setCart(cart.filter(item => item[2] !== ts));
   }
 
   const total = products.length === 0 ? 0 : cart.map(sku => products.filter(product => product.sku === sku[0])[0].price).reduce((t, n) => (t + n), 0);
@@ -56,7 +60,7 @@ const App = ({ classes }) => {
     <div className={classes.container}>
       <Drawer className={classes.cart} open={cartOpen} onClose={toggleCart} anchor="right">
         <div className={classes.cart}>
-          {cart.map((item, i) => <ProductListing key={i} sku={item[0]} products={products} size={item[1]} />)}
+          {cart.map(item => <ProductListing key={item[2]} ts={item[2]} sku={item[0]} products={products} size={item[1]} remove={removeFromCart} />)}
         </div>
         <div className={classes.totalcontainer}>
           <Typography variant="subtitle2">

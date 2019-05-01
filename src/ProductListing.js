@@ -38,7 +38,7 @@ const styles = {
     }
 };
 
-const ProductListing = ({ sku, size, products, classes, remove }) => {
+const ProductListing = ({ sku, size, products, classes, remove, ts }) => {
     if (products.length === 0)
         return "";
 
@@ -56,7 +56,7 @@ const ProductListing = ({ sku, size, products, classes, remove }) => {
                 </Typography>
             </div>
             <div className={classes.deletecontainer}>
-                <IconButton onClick={remove}>
+                <IconButton onClick={remove.bind(null, ts)}>
                     <DeleteIcon />
                 </IconButton>
             </div>
